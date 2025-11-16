@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "target": "esnext", //to handle async await functions
-        "watch": true // to recompile the file every time we save
+        "lib": ["dom", "es2017"]
+        // "watch": true, // to recompile the file every time we save
     }
 }
