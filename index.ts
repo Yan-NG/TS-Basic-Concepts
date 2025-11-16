@@ -72,5 +72,82 @@ const apiResponse : ApiResponse ={
 }
 
 //----------------------------------------------------------------------------------
+//Type Guards
+//----------------------------------------------------------------------------------
+//Type guards refine union types during runtime, allowing the compiler to determine the specific type you're working with.
 
+//typeof guard
+type alphanumeric = string | number;
 
+function add(a:alphanumeric, b:alphanumeric){
+    if(typeof a === "number" && typeof b === "number" ){
+        return a + b
+    }
+}
+add(5,5)
+
+//instanceof guard 
+class Banana{
+    isTasty():boolean{
+        return true
+    }
+}
+class Apple{
+    isJuicy():boolean{
+        return true
+    }
+}
+type Fruit = Banana | Apple;
+
+function buyFruit(fruit:Fruit):number{
+    let price =0;
+    if(fruit instanceof Apple){
+        price = fruit.isJuicy() ? 5 : 10; 
+    }
+    return price;
+}
+
+const apple = new Apple();
+buyFruit(apple)
+
+//in guard
+
+function buyFruitInGuard(fruit:Fruit):number{
+    let price = 0;
+    if('isTasty' in fruit){
+        price = fruit.isTasty() ? 5 : 10; 
+    }
+
+    if('isJuicy' in fruit){
+        price = fruit.isJuicy() ? 5 : 10; 
+    }
+    return price;
+}
+buyFruitInGuard(apple)
+
+//equality narrowing 
+function getValues(a:number|string, b:string){
+    if(a===b){
+        console.log(a)
+    }else{
+        console.log(a)
+    }   
+}
+
+//user-defined guards
+
+// this function is a user-defined guards
+function isBanana(fruit:Fruit):fruit is Banana{
+    return fruit instanceof Banana
+}
+
+function buyFruitUserDefinedGuard(fruit:Fruit):number{
+    let price =0 ;
+    if(isBanana(fruit)){
+        price = fruit.isTasty ? 5: 10;
+    }else{
+        price = fruit.isJuicy ? 5 : 10;
+    }
+    return price;
+}
+buyFruitUserDefinedGuard(apple)
