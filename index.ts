@@ -202,5 +202,69 @@ const func = async ()=>{
 }
 type Result2 = Awaited<ReturnType<typeof func>>
 
+// Interfaces Vs Type Aliases
+// no differences for basic objects
+interface Video1 {
+    title: string;
+    postedAt: Date;
+    likes: number;
+    sourceUrl(a: string): string;
+}
 
+type Video2 = {
+    title: string;
+    postedAt: Date;
+    likes: number;
+    sourceUrl(a: string): string;
+}
 
+// as a function description type alias is more common 
+type Video ={};
+interface scheduleVideo1{
+    (video:Video, scheduledFor:Date):Promise<boolean>
+}
+type scheduleVideo2 = (video:Video, scheduledFor:Date)=>Promise<boolean> ;
+
+type UserId = string;
+
+//tuple
+type VideoUpload = [UserId, Video];
+
+//union
+type SendMessageDetails = |{ type: "email", emailAddress: string } |{ type: "sms", phoneNumber: string };
+
+//Intersections //We can extend type alias and interfaces
+//Interfaces can't extend type alias that are union type
+type SendMessageJob = SendMessageDetails & {
+state: "queued" | "in-progress" | "completed"
+};
+
+//Interfaces : Best for object shapes or public APIs . Are open: can be augmented across modules.
+//Type aliases : More flexible can represent unions, tuples, mapped types, conditional types. Are closed cannot be re-opened for augmentation.
+
+interface Greeter {
+    greet(): string;
+}
+class Person implements Greeter {
+    constructor(private name: string) {}
+    greet() {return `Hi I'm ${this. name}`}
+}
+
+// interfaces can be merge this is useful to combine libraries or data coming from two different places 
+interface IUser {
+    name:string
+}
+interface IUser{
+    createAtDt: Date
+}
+const u:IUser ={
+    name:"Ann",
+    createAtDt: new Date()
+}
+// this doesn't work with types
+type TUser = {
+    name:string
+}
+type TUser{
+    createAtDt: Date
+}
