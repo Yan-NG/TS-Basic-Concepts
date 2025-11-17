@@ -151,3 +151,56 @@ function buyFruitUserDefinedGuard(fruit:Fruit):number{
     return price;
 }
 buyFruitUserDefinedGuard(apple)
+
+//----------------------------------------------------------------------------------
+//Typescript Utility Types
+//----------------------------------------------------------------------------------
+//Utilities for Object Types
+
+type User = {
+    id:string;
+    name?:string;
+    age:number;
+}
+
+type PartialUser = Partial<User> // all of the properties are optionals
+type RequiredPropsUser = Required<User> // all props are required 
+type OmitPropUser = Omit<User,"id"|"name" > // to remove an specific props 
+type PickPropUser = Pick<User, "id"> // to pick specific props 
+type ReadOnlyUser = Readonly<User> // to create a read only type
+
+// you can create a custom Mutable type 
+type Mutable<Type> ={
+    -readonly [Key in keyof Type]:Type[Key]
+}
+type MutableUser = Mutable<ReadOnlyUser>
+
+//Utilities for Unions
+type Role ="admin" | "user" | "anonymous"
+type NonRoleAdmin = Exclude<Role, "admin">
+
+type RoleAttributes = 
+    |   {   role:"admin", orgId:string  }
+    |   {   role:"user" }
+    |   {   role:"anonymous"};
+
+type AdminRole = Extract<RoleAttributes,{role:"admin"}>
+
+//Utility Types for Functions
+type Func = (a:number, b:string)=>string
+type ReturnFuncValue = ReturnType<Func>;
+type ParamsFunc = Parameters<Func> 
+type MaybeString = string | null | undefined;
+type DefinitelyString = NonNullable<MaybeString>;
+type PromiseString =  Promise<string>;
+type Result = Awaited<PromiseString>;
+
+const func = async ()=>{
+    return{
+        id:123
+    }
+}
+type Result2 = Awaited<ReturnType<typeof func>>
+
+
+
